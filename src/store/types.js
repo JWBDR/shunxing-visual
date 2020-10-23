@@ -1,0 +1,10 @@
+// 定义类型常量
+const INCREMENT = 'INCREMENT'// msg
+const DECREMENT = 'DECREMENT'
+const GETDATATEXT = 'GETDATATEXT'
+
+export default {
+  INCREMENT,
+  DECREMENT,
+  GETDATATEXT
+}

@@ -1,24 +1,18 @@
+
 # sx-project
 
-## Project setup
-```
+> 顺兴数据可视化展示平台
+
+## Build Setup
+
+``` bash
+# 下载依赖
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
+# 本地开发
 npm run serve
-```
 
-### Compiles and minifies for production
-```
+# 打包静态资源以及SSR配置文件
 npm run build
-```
 
-### Lints and fixes files
 ```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
