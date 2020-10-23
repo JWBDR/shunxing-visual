@@ -80,6 +80,22 @@
             <img src="../../assets/left-side/center-4.png" alt="" />
             <router-link :to="{ name: 'analyse' }"> 产线运行分析 </router-link>
           </li>
+          <!-- <template v-if="typeof $route.query.id == 'number'"> -->
+          <transition name="plus-icon">
+            <li
+              v-if="$route.query.id"
+              :class="{
+                list: routeFlag && $route.name !== 'facility',
+                'active-menu': $route.name === 'facility',
+              }"
+            >
+              <img src="../../assets/left-side/center-3.png" alt="" />
+              <router-link :to="{ name: 'facility' }">
+                设备生产监控
+              </router-link>
+            </li>
+          </transition>
+          <!-- </template> -->
           <li
             :class="{
               list: routeFlag && $route.name !== 'power',
@@ -98,19 +114,6 @@
             <img src="../../assets/left-side/center-6.png" alt="" />
             <router-link :to="{ name: 'measure' }"> 产线计量管理 </router-link>
           </li>
-          <!-- <template v-if="typeof $route.query.id == 'number'">
-            <li
-            :class="{
-              list: routeFlag && $route.name !== 'facility',
-              'active-menu': $route.name === 'facility',
-            }"
-            >
-              <img src="../../assets/left-side/center-3.png" alt="" />
-              <router-link :to="{ name: 'facility' }">
-                设备生产监控
-              </router-link>
-            </li>
-          </template> -->
         </ul>
       </div>
       <div class="weather">
@@ -680,91 +683,91 @@
 </template>
 
 <script>
-import { Avatar, Badge, Button, Radio } from 'ant-design-vue'
+import { Avatar, Badge, Button, Radio } from "ant-design-vue";
 
-import messageBox from '@/components/page/messageBox'
-import 'ant-design-vue/lib/button/style/css'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
+import messageBox from "@/components/page/messageBox";
+import "ant-design-vue/lib/button/style/css";
+import moment from "moment";
+import "moment/locale/zh-cn";
 export default {
-  data () {
+  data() {
     return {
       city: [],
       Avatar,
       Badge,
       Button,
       nowtime: new Date(), // time
-      msg: '', // button
+      msg: "", // button
       routeFlag: true,
-      bubbleFlag: false // 气泡flag
-    }
+      bubbleFlag: false, // 气泡flag
+    };
   },
   components: {
-    messageBox
+    messageBox,
   },
   filters: {
     upDateDay: function (value) {
-      return moment(value).format('YYYY-MM-DD')
+      return moment(value).format("YYYY-MM-DD");
     },
     upDateHour: function (value) {
-      return moment(value).format('HH:mm')
-    }
+      return moment(value).format("HH:mm");
+    },
   },
-  created () {
+  created() {
     setTimeout(() => {
-      this.getTianQi()
-    }, 200)
+      this.getTianQi();
+    }, 200);
   },
-  mounted () {
-    const _this = this
+  mounted() {
+    const _this = this;
     this.timer = setInterval(() => {
-      _this.nowtime = new Date()
+      _this.nowtime = new Date();
       // console.log(this.city.type)
-    }, 120000) // 2分钟请求一次120000
-    this.shutMessage()
+    }, 120000); // 2分钟请求一次120000
+    this.shutMessage();
   },
   methods: {
     // 关闭气泡
-    shutMessage () {
+    shutMessage() {
       setTimeout(() => {
-        this.bubbleFlag = false
-      }, 5000)
+        this.bubbleFlag = false;
+      }, 5000);
     },
     // btn按钮组
-    changeMessage (e) {
-      this.msg = e.target.value
-      this.$store.dispatch('indexModules/increment', this.msg)
+    changeMessage(e) {
+      this.msg = e.target.value;
+      this.$store.dispatch("indexModules/increment", this.msg);
       // this.$store.commit('indexModules/setMsg',this.msg);
-      if (this.msg == 'a') {
-        this.bubbleFlag = true
-        this.shutMessage()
-      } else if (this.msg == 'b') {
-        this.bubbleFlag = true
-        this.shutMessage()
+      if (this.msg == "a") {
+        this.bubbleFlag = true;
+        this.shutMessage();
+      } else if (this.msg == "b") {
+        this.bubbleFlag = true;
+        this.shutMessage();
       }
     },
-    getTianQi () {
-      const self = this
+    getTianQi() {
+      const self = this;
       self.$axios
-        .get('http://wthrcdn.etouch.cn/weather_mini?city=广州')
+        .get("http://wthrcdn.etouch.cn/weather_mini?city=广州")
         .then(function (response) {
           // console.log(response.data.data)
-          self.city = response.data.data.forecast[0]
+          self.city = response.data.data.forecast[0];
           // console.log(self.city.type);
           // self.city.type = "阴"
         })
         .catch(function (error) {
-          console.log(error)
-        })
-    }
+          console.log(error);
+        });
+    },
   },
-  beforeDestroy () {
+  beforeDestroy() {
     // 销毁时间
     if (this.timer) {
-      clearInterval(this.timer)
+      clearInterval(this.timer);
     }
-  }
-}
+  },
+};
 </script>
 
 <style lang="less">
@@ -1661,4 +1664,19 @@ background: rgba(0, 0, 0, 0.2);
   .radio-group{
   }
 }
+.plus-icon-enter-active{
+    transition: opacity .6s;
+  }
+  .plus-icon-enter{
+     opacity: 0;
+  }
+  .plus-icon-leave-active{
+    transition: opacity .6s;
+  }
+  .plus-icon-leave-to{
+    opacity: 0;
+  }
+  .plus-icon-enter-to{
+    opacity: 1;
+  }
 </style>
